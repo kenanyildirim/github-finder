@@ -4,10 +4,12 @@ import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
 import axios from "axios"
 import Search from "./components/users/Search";
+import { Alert } from "./components/layout/Alert";
 class App extends Component {
  state={
    users:[],
-   loading:false
+   loading:false,
+   alert:null
  }
 
 
@@ -29,13 +31,32 @@ class App extends Component {
     });
   }
 
+  setAlert=(msg,type)=>{
+    this.setState({
+      alert:{
+        msg,
+        type
+      }
+    });
+
+    setTimeout(() => {
+      this.setState({
+        alert:null
+      });
+    }, 5000);
+  }
+
   render() {
+    const {loading,users,alert}=this.state;
     return (
       <div className="App">
         <Navbar title="Github Finder" />
         <div className="container">
-          <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={this.state.users.length>0} />
-          <Users loading={this.state.loading} users={this.state.users} />
+          <Alert alert={alert} />
+          <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={this.state.users.length>0}
+          setAlert={this.setAlert}
+          />
+          <Users loading={loading} users={users} />
         </div>
       </div>
     );
