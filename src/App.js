@@ -7,9 +7,11 @@ import axios from "axios"
 import Search from "./components/users/Search";
 import { Alert } from "./components/layout/Alert";
 import { About } from "./components/pages/About";
+import User from "./components/users/User";
 class App extends Component {
  state={
    users:[],
+   user:{},
    loading:false,
    alert:null
  }
@@ -22,6 +24,19 @@ class App extends Component {
     const res= await axios.get("https://api.github.com/search/users?q="+text);
  this.setState({
    users:res.data.items,
+  loading:false
+});
+  }
+
+  //get a single github user
+
+  getUser=async(username)=>{
+    this.setState({
+      loading:true
+    });
+    const res= await axios.get(`https://api.github.com/users/${username}`);
+ this.setState({
+   user:res.data,
   loading:false
 });
   }
@@ -52,7 +67,7 @@ class App extends Component {
     const {loading,users,alert}=this.state;
 
     return (
-      <Router>
+      <Router basename={'/githubfinder/'}>
         <div className="App">
         <Navbar title="Github Finder" />
         <div className="container">
@@ -67,14 +82,9 @@ class App extends Component {
               </Fragment>
             )} />
  <Route exact path="/about" component={About}>
-
+ 
             </Route>
           </Switch>
-
-         
-           
-         
-         
         </div>
       </div>
       </Router>
