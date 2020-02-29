@@ -1,15 +1,16 @@
-import React, { Component } from "react";
+import React, { Component,useEffect } from "react";
 import { Spinner } from "../layout/Spinner";
 import { Link } from "react-router-dom";
 import { Repos } from "../repos/Repos";
 
-export class User extends Component {
-  componentDidMount() {
-    this.props.getUser(this.props.match.params.login);
-    this.props.getUserRepos(this.props.match.params.login);
-  }
+const User =({user,loading,getUser,getUserRepos,repos,match})=> {
 
-  render() {
+    useEffect(() => {
+        getUser(match.params.login);
+        getUserRepos(match.params.login);
+    }, [])
+
+
     const {
       name,
       avatar_url,
@@ -24,8 +25,7 @@ export class User extends Component {
       public_gists,
       company,
       hireable
-    } = this.props.user;
-    const { loading,repos } = this.props;
+    } = user;
     if (loading) {
       return <Spinner />;
     }
@@ -99,7 +99,7 @@ export class User extends Component {
         <Repos repos={repos} />
       </>
     );
-  }
+  
 }
 
 export default User;
