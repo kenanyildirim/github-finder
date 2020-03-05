@@ -1,13 +1,14 @@
-import React, { Component,useEffect } from "react";
+import React, { Component,useEffect,useContext } from "react";
 import { Spinner } from "../layout/Spinner";
 import { Link } from "react-router-dom";
 import { Repos } from "../repos/Repos";
+import GithubContext from "../../context/github/githubContext";
 
-const User =({user,loading,getUser,getUserRepos,repos,match})=> {
-
+const User =({match})=> {
+  const githubContext = useContext(GithubContext)
     useEffect(() => {
-        getUser(match.params.login);
-        getUserRepos(match.params.login);
+        githubContext.getUser(match.params.login);
+        githubContext.getUserRepos(match.params.login);
     }, [])
 
 
@@ -25,8 +26,8 @@ const User =({user,loading,getUser,getUserRepos,repos,match})=> {
       public_gists,
       company,
       hireable
-    } = user;
-    if (loading) {
+    } = githubContext.user;
+    if (githubContext.loading) {
       return <Spinner />;
     }
     return (
@@ -96,7 +97,7 @@ const User =({user,loading,getUser,getUserRepos,repos,match})=> {
                 Public Gists : {public_gists}
             </div>
         </div>
-        <Repos repos={repos} />
+        <Repos />
       </>
     );
   
