@@ -26,7 +26,7 @@ const App = () => {
   };
   return (
     <GithubState>
-      <Router basename={"/githubfinder/"}>
+      <Router>
         <div className='App'>
           <Navbar title='Github Finder' />
           <div className='container'>
